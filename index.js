@@ -4,8 +4,18 @@ const morgan = require('morgan')
 
 const app = express()
 
+// Morgan logging token definition
+morgan.token('post-object', (req,res) => {
+  if(req.method !== 'POST') return "";
+
+  const name = req.body.name;
+  const number = req.body.number;
+  return JSON.stringify( {name, number});
+});
+
+
 app.use(cors())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-object'))
 app.use(express.json())
 
 let persons = [
