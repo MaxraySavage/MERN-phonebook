@@ -1,20 +1,7 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-
-const url = process.env.MONGODB_URI;
-
-console.log('connecting to MongoDB');
-
-mongoose.connect(url)
-  .then(() => {
-    console.log('connected to MongoDB');
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message);
-  });
 
 const personSchema = new mongoose.Schema({
   name: {
