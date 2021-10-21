@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
 
-console.log('connecting to', url)
+console.log('connecting to MongoDB')
 
 mongoose.connect(url)
   .then(result => {
@@ -13,7 +13,11 @@ mongoose.connect(url)
   })
 
 const personSchema = new mongoose.Schema({
-  name: String,
+  name: {
+      type: String,
+      minLength: 1,
+      required: true,
+    },
   number: String,
 })
 
@@ -25,4 +29,4 @@ personSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Person', noteSchema)
+module.exports = mongoose.model('Person', personSchema)
