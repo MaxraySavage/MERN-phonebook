@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const Person = require('./models/person')
 
 const app = express()
 
@@ -48,45 +50,34 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(people => {
+    response.json(people)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if(person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person.findById(request.params.id).then(person => {
+      response.json(person)
+    })
 })
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    const newId = Math.floor(Math.random() * 10**10)
 
     if(!body.name || !body.number) {
         return response.status(400).json({
-            error: 'Missing name or number'
+            error: `Missing ${!body.name ? 'name' : ''}${!body.name && !body.number ? ' and ' : ''}${ !body.number ? 'number' : ''}`
         })
     }
 
-    if(persons.findIndex(person => person.name === body.name) !== -1) {
-        return response.status(400).json({
-            error: 'Name must be unique'
-        })
-    }
-
-    const person = {
-        id: newId,
+    const person = new Person({
         name: body.name,
         number: body.number
-    }
+    })
 
-    persons = persons.concat(person)
-
-    response.json(person)
+    note.save().then(savedNote => {
+      response.json(savedNote)
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -100,7 +91,7 @@ app.get('/info', (request, response) => {
     response.send(`Phonebook has info for ${persons.length} people <br/><br/> ${new Date().toString()}`)
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
