@@ -8,6 +8,12 @@ peopleRouter.get('/', (request, response) => {
   });
 });
 
+peopleRouter.get('/info', (request, response) => {
+  Person.find({}).then((people) => {
+    response.send(`Phonebook has info for ${people.length} people <br/><br/> ${new Date().toString()}`);
+  });
+});
+
 peopleRouter.get('/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then((person) => {
@@ -63,12 +69,6 @@ peopleRouter.put('/:id', (request, response, next) => {
       response.json(updatedPerson);
     })
     .catch((error) => next(error));
-});
-
-peopleRouter.get('/info', (request, response) => {
-  Person.find({}).then((people) => {
-    response.send(`Phonebook has info for ${people.length} people <br/><br/> ${new Date().toString()}`);
-  });
 });
 
 module.exports = peopleRouter;
