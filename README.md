@@ -7,3 +7,8 @@ MongoDB Atlas
 
 ## App URL
 https://aqueous-ridge-34409.herokuapp.com/
+
+## Roadmap
+- [ ] Jest for testing
+- [ ] authentication/authorization
+- [ ] Styling
