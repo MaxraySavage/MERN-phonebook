@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build --prod && cp -r build ../../part3/persons-api/build",
-    "deploy": "git push heroku master",
+    "deploy": "git push heroku main",
     "logs:prod": "heroku logs --tail"
   },
   "author": "",
