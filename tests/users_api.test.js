@@ -9,7 +9,7 @@ const api = supertest(app);
 
 // ...
 
-describe('when there is initially one user in db', () => {
+describe('for the post route, when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({});
 
@@ -24,7 +24,7 @@ describe('when there is initially one user in db', () => {
     await user.save();
   });
 
-  test('test db initialization is working', async () => {
+  test('test db initialization works', async () => {
     const usersAtStart = await helper.usersInDb();
     expect(usersAtStart).toHaveLength(1);
     expect(usersAtStart.map((u) => u.username)).toContain('root');
