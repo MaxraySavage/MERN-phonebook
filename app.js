@@ -8,6 +8,7 @@ const app = express();
 
 const peopleRouter = require('./controllers/people');
 const usersRouter = require('./controllers/users');
+const authRouter = require('./controllers/auth');
 const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/people', peopleRouter);
 
 app.use(middleware.unknownEndpoint);

@@ -13,7 +13,7 @@ describe('for the post route, when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({});
 
-    const passwordHash = await bcrypt.hash('sekret, safe', 12);
+    const passwordHash = await bcrypt.hash('sekret-safe', 12);
     const user = new User({
       username: 'root',
       firstName: 'JC',
