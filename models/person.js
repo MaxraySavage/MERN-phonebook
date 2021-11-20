@@ -8,11 +8,15 @@ const personSchema = new mongoose.Schema({
     type: String,
     minLength: 3,
     required: true,
-    unique: true,
   },
   number: {
     type: String,
     minLength: 7,
+    required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
 });
