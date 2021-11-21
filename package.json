@@ -7,6 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "NODE_ENV=test jest --verbose",
+    "test:all": "NODE_ENV=test jest --verbose --runInBand",
     "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build --prod && cp -r build ../../part3/persons-api/build",
     "deploy": "git push heroku main",
     "logs:prod": "heroku logs --tail"
