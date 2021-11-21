@@ -8,8 +8,6 @@ const app = require('../app');
 
 const api = supertest(app);
 
-// ...
-
 describe('when there is an attempt to login', () => {
   beforeEach(async () => {
     await User.deleteMany({});
