@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
@@ -49,14 +50,24 @@ describe('when there is an attempt to login', () => {
 
     expect(result.body).toHaveProperty('token');
     expect(result.body).toMatchObject(expectedUserInfo);
-  });
-
-  test('successful login response contains valid token', async () => {
-    expect('a').toBe('b');
+    const tokenContents = jwt.verify(result.body.token, process.env.ACCESS_TOKEN_SECRET);
+    expect(tokenContents).toHaveProperty('id');
+    expect(tokenContents).toHaveProperty('username');
   });
 
   test('incorrect login responds with status code 401', async () => {
-    expect('a').toBe('b');
+    const loginInfo = {
+      username: 'root',
+      password: 'sekret-saf',
+    };
+
+    const result = await api
+      .post('/api/auth')
+      .send(loginInfo)
+      .expect(401)
+      .expect('Content-Type', /application\/json/);
+
+    expect(result.body).not.toHaveProperty('token');
   });
 });
 
