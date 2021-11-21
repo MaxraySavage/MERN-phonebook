@@ -9,11 +9,11 @@ authRouter.post('/', async (request, response) => {
   if (!body.username || !body.password) return response.sendStatus(401);
 
   const user = await User.findOne({ username: body.username });
-  const passwordCorrect = user === null
+  const passwordIsCorrect = user === null
     ? false
     : await bcrypt.compare(body.password, user.passwordHash);
 
-  if (!(user && passwordCorrect)) {
+  if (!passwordIsCorrect) {
     return response.status(401).json({
       error: 'invalid username or password',
     });
