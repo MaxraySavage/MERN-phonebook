@@ -18,8 +18,10 @@ https://aqueous-ridge-34409.herokuapp.com/
 next steps for each of the action items
 
 ### Authentication/Authorization
+- [ ] Write token verification middleware
 - [ ] User info should be editable but only by a logged in user
 - [ ] Contacts should only be able to be added by a logged in user
 - [ ] Contacts should be editable and deletable by logged in user
 - [ ] Users shouldnt be able to see each other's contacts
+
 
