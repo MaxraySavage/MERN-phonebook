@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const authRouter = require('express').Router();
 const User = require('../models/user');
 
+// eslint-disable-next-line consistent-return
 authRouter.post('/', async (request, response) => {
   const { body } = request;
   if (!body.username || !body.password) return response.sendStatus(401);
@@ -20,6 +21,7 @@ authRouter.post('/', async (request, response) => {
 
   const userForToken = {
     username: user.username,
+    // eslint-disable-next-line no-underscore-dangle
     id: user._id,
   };
 
