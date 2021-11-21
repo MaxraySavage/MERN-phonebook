@@ -9,7 +9,7 @@ const api = supertest(app);
 
 // ...
 
-describe('for the post route, when there is initially one user in db', () => {
+describe('for the user creation post route, when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({});
 
@@ -30,7 +30,7 @@ describe('for the post route, when there is initially one user in db', () => {
     expect(usersAtStart.map((u) => u.username)).toContain('root');
   });
 
-  test('creation succeeds with a fresh username', async () => {
+  test('user creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
@@ -53,7 +53,7 @@ describe('for the post route, when there is initially one user in db', () => {
     expect(usernames).toContain(newUser.username);
   });
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
+  test('user creation fails with proper statuscode and message if username already taken', async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
@@ -75,7 +75,7 @@ describe('for the post route, when there is initially one user in db', () => {
     expect(usersAtEnd).toHaveLength(usersAtStart.length);
   });
 
-  test('creation fails with proper statuscode and message if username too short', async () => {
+  test('user creation fails with proper statuscode and message if username too short', async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
@@ -97,7 +97,7 @@ describe('for the post route, when there is initially one user in db', () => {
     expect(usersAtEnd).toHaveLength(usersAtStart.length);
   });
 
-  test('creation fails with proper statuscode and message if password too short', async () => {
+  test('user creation fails with proper statuscode and message if password too short', async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
@@ -117,6 +117,28 @@ describe('for the post route, when there is initially one user in db', () => {
 
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
+});
+
+describe('for the update user route, when there is initially one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+
+    const passwordHash = await bcrypt.hash('sekret-safe', 12);
+    const user = new User({
+      username: 'root',
+      firstName: 'JC',
+      lastName: 'Denton',
+      passwordHash,
+    });
+
+    await user.save();
+  });
+
+  test('test db initialization works', async () => {
+    const usersAtStart = await helper.usersInDb();
+    expect(usersAtStart).toHaveLength(1);
+    expect(usersAtStart.map((u) => u.username)).toContain('root');
   });
 });
 
