@@ -9,6 +9,17 @@ MongoDB Atlas
 https://aqueous-ridge-34409.herokuapp.com/
 
 ## Roadmap
-- [ ] Jest for testing
+- [x] Jest for testing
 - [ ] authentication/authorization
-- [ ] Styling
+- [x] Styling
+- [ ] Refactor contact route to use async functions
+
+## Next Steps
+next steps for each of the action items
+
+### Authentication/Authorization
+- [ ] User info should be editable but only by a logged in user
+- [ ] Contacts should only be able to be added by a logged in user
+- [ ] Contacts should be editable and deletable by logged in user
+- [ ] Users shouldnt be able to see each other's contacts
+
