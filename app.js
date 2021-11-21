@@ -6,7 +6,7 @@ const config = require('./utils/config');
 
 const app = express();
 
-const peopleRouter = require('./controllers/people');
+const contactsRouter = require('./controllers/contacts');
 const usersRouter = require('./controllers/users');
 const authRouter = require('./controllers/auth');
 
@@ -29,7 +29,7 @@ app.use(middleware.requestLogger);
 
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/people', peopleRouter);
+app.use('/api/contacts', contactsRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
