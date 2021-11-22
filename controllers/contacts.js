@@ -1,56 +1,64 @@
 /* eslint-disable consistent-return */
 const contactsRouter = require('express').Router();
 const Contact = require('../models/contact');
+const User = require('../models/user');
+const { authenticateToken } = require('../utils/middleware');
 
-contactsRouter.get('/', (request, response) => {
-  Contact.find({}).then((contact) => {
+contactsRouter.get('/', authenticateToken, async (request, response) => {
+  const user = await User.findById(request.user.id);
+  const contacts = await Contact.find({ user: user.id });
+  response.json(contacts);
+});
+
+contactsRouter.get('/:id', authenticateToken, async (request, response) => {
+  const user = await User.findById(request.user.id);
+  const contact = await Contact.findById(request.params.id);
+
+  if (contact.user.toString() === user.id) {
+    await Contact.findById(request.params.id);
     response.json(contact);
-  });
+  } else {
+    return response.status(401).json({ error: 'operation not authorized' });
+  }
 });
 
-contactsRouter.get('/info', (request, response) => {
-  Contact.find({}).then((contact) => {
-    response.send(`Phonebook has info for ${contact.length} contacts <br/><br/> ${new Date().toString()}`);
-  });
-});
-
-contactsRouter.get('/:id', (request, response, next) => {
-  Contact.findById(request.params.id)
-    .then((contact) => {
-      if (contact) {
-        response.json(contact);
-      } else {
-        response.status(404).end();
-      }
-    })
-    .catch((error) => next(error));
-});
-
-contactsRouter.post('/', (request, response, next) => {
+contactsRouter.post('/', authenticateToken, async (request, response) => {
+  const user = await User.findById(request.user.id);
   const { body } = request;
 
   const contact = new Contact({
     name: body.name,
     number: body.number,
+    user: user.id,
   });
 
-  contact.save()
-    .then((savedContact) => savedContact.toJSON())
-    .then((savedandFormattedContact) => {
-      response.json(savedandFormattedContact);
-    })
-    .catch((error) => next(error));
+  const savedContact = await contact.save();
+  user.contacts = user.contacts.concat(savedContact.id);
+  await user.save();
+
+  response.status(201).json(savedContact);
 });
 
-contactsRouter.delete('/:id', (request, response, next) => {
-  Contact.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end();
-    })
-    .catch((error) => next(error));
+contactsRouter.delete('/:id', authenticateToken, async (request, response) => {
+  const user = await User.findById(request.user.id);
+  const contact = await Contact.findById(request.params.id);
+
+  if (contact.user.toString() === user.id) {
+    await Contact.findByIdAndRemove(request.params.id);
+    return response.status(204).end();
+  }
+
+  return response.status(401).json({ error: 'operation not authorized' });
 });
 
-contactsRouter.put('/:id', (request, response, next) => {
+contactsRouter.put('/:id', authenticateToken, async (request, response) => {
+  const user = await User.findById(request.user.id);
+  const currentContact = await Contact.findById(request.params.id);
+
+  if (currentContact.user.toString() !== user.id) {
+    return response.status(401).json({ error: 'operation not authorized' });
+  }
+
   const { body } = request;
 
   if (!body.name || !body.number) {
@@ -59,16 +67,19 @@ contactsRouter.put('/:id', (request, response, next) => {
     });
   }
 
-  const contact = {
+  const newContact = {
     name: body.name,
     number: body.number,
+    user: user.id,
   };
 
-  Contact.findByIdAndUpdate(request.params.id, contact, { new: true, runValidators: true })
-    .then((updatedContact) => {
-      response.json(updatedContact);
-    })
-    .catch((error) => next(error));
+  const updatedContact = await Contact.findByIdAndUpdate(
+    request.params.id,
+    newContact,
+    { new: true, runValidators: true },
+  );
+
+  response.json(updatedContact);
 });
 
 module.exports = contactsRouter;
