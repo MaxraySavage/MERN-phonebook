@@ -2,9 +2,16 @@ const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 
+// mongoose-unique-validator has major bugs so we are checking if username is unique manually
 // eslint-disable-next-line consistent-return
 usersRouter.post('/', async (request, response) => {
   const { body } = request;
+
+  if (User.findOne({ username: body.username })) {
+    return response.status(400).json({
+      error: 'Sorry, that username is already taken',
+    });
+  }
 
   if (!body.password || body.password.length < 5) {
     return response.status(400).json({
