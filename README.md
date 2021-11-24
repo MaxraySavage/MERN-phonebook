@@ -1,17 +1,21 @@
 # Phonebook Fullstack App
+This project was my first foray into self directed learning about how to make a fullstack application!
 
 ## Stack
 React 
 Express 
 MongoDB Atlas 
+Node
+
+The code for the frontend is located [here](https://github.com/MaxraySavage/MERN-phonebook-frontend)
 
 ## App URL
 https://aqueous-ridge-34409.herokuapp.com/
 
 ## Roadmap
 - [x] Jest for testing
-- [ ] authentication/authorization
-- [x] Styling
+- [x] authentication/authorization
+- [ ] Styling
 - [ ] Refactor contact route to use async functions
 
 ## Next Steps
