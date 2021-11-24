@@ -9,6 +9,6 @@ MongoDB Atlas
 https://aqueous-ridge-34409.herokuapp.com/
 
 ## Roadmap
-- [ ] Jest for testing
-- [ ] authentication/authorization
+- [x] Jest for testing
+- [x] authentication/authorization
 - [ ] Styling
