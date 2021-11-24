@@ -7,7 +7,9 @@ const User = require('../models/user');
 usersRouter.post('/', async (request, response) => {
   const { body } = request;
 
-  if (User.findOne({ username: body.username })) {
+  const usernameNotUnique = await User.exists({ username: body.username });
+
+  if (usernameNotUnique) {
     return response.status(400).json({
       error: 'Sorry, that username is already taken',
     });
@@ -15,7 +17,7 @@ usersRouter.post('/', async (request, response) => {
 
   if (!body.password || body.password.length < 5) {
     return response.status(400).json({
-      error: body.password ? 'password must be at least 5 characters' : 'must include password',
+      error: body.password ? 'Your password must be at least 5 characters' : 'Please supply a password',
     });
   }
 
